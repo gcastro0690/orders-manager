@@ -1,0 +1,178 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+<h:body>
+	<ui:composition template="/view/template/mainLayout.xhtml">
+
+		<ui:define name="navegacion">
+			<div id="navegacion">
+				<h:form prependId="false">
+					<p:breadCrumb homeDisplay="text" class="breadcump-home" model="#{altaSolicitudInstrumentoController.menuModel}"
+						rendered="true" />
+				</h:form>
+			</div>
+		</ui:define>
+
+		<c:if test="#{altaSolicitudInstrumentoController.informeCorrespondencia}">
+			<ui:define name="title">#{msg.titulo_solicitud_informe_correspondencia}</ui:define>
+		</c:if>
+		<c:if test="#{not altaSolicitudInstrumentoController.informeCorrespondencia}">
+			<ui:define name="title">#{msg.titulo_solicitar_aprobacion_eae}</ui:define>
+		</c:if>
+
+		<ui:define name="content">
+
+			<h:form id="solicitudInformeCorrespondencia">
+
+				<div class="row">
+					<div>
+						<div class="tabla-header-titulo" style="width: 100%">
+							<div class="tabla-header-titulo-icon">
+								<em class="fa fa-envelope" style="font-size: 32px;" />
+							</div>
+							<c:if test="#{altaSolicitudInstrumentoController.informeCorrespondencia}">
+								<div class="tabla-header-titulo-titulo">#{msg.titulo_solicitud_informe_correspondencia}</div>
+							</c:if>
+							<c:if test="#{not altaSolicitudInstrumentoController.informeCorrespondencia}">
+								<div class="tabla-header-titulo-titulo">#{msg.titulo_solicitar_aprobacion_eae}</div>
+							</c:if>
+
+						</div>
+					</div>
+				</div>
+
+				<div class="ui-lg-12">
+					<div class="ui-g-12 ui-md-12 ui-lg-12">
+						<p:dataTable id="solicitudArchivos" var="solicitudArchivo"
+							value="#{altaSolicitudInstrumentoController.solicitudArchivos}" emptyMessage="" class="tabla" editable="true"
+							editMode="cell" rows="10" rowIndexVar="rowIndex" paginator="true" reflow="true"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink}  {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="5,10,15,25,50" currentPageReportTemplate="{currentPage} #{msg.de} {totalPages}"
+							paginatorPosition="bottom">
+							<p:ajax event="cellEdit" />
+							<f:facet class="tabla-header" name="header">
+								<p:outputPanel>
+									<div class="tabla-header-titulo">
+										<div class="tabla-header-titulo-titulo">#{msg.solicitud_informe_correspondencia_tabla_header}</div>
+									</div>
+									<div style="clear: both" />
+								</p:outputPanel>
+							</f:facet>
+
+							<p:column headerText="#{msg.solicitud_informe_correspondencia_tabla_fecha}">
+								<h:outputText value="#{solicitudArchivo.fecha.time}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="#{msg.solicitud_informe_correspondencia_tabla_nombre}">
+								<h:outputText value="#{solicitudArchivo.nombre}" />
+							</p:column>
+
+							<p:column headerText="#{msg.solicitud_informe_correspondencia_tabla_descripcion}">
+								<p:cellEditor rendered="true">
+									<f:facet name="output">
+										<h:outputText value="#{solicitudArchivo.descripcion}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{solicitudArchivo.descripcion}" autocomplete="off" style="width:96%" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column headerText="#{msg.solicitud_informe_correspondencia_tabla_descargar}">
+								<ui:include src="/view/template/downloadTemplate.xhtml">
+									<ui:param name="form" value="#{false}" />
+									<ui:param name="styleClass" value="downloadButtonTable" />
+									<ui:param name="file" value="#{solicitudArchivo}" />
+								</ui:include>
+							</p:column>
+
+							<p:column headerText="#{msg.solicitud_informe_correspondencia_tabla_eliminar}">
+								<p:commandButton id="btnEliminarArchivo" icon="fa fa-trash-o"
+									actionListener="#{altaSolicitudInstrumentoController.eliminarArchivo(solicitudArchivo)}"
+									oncomplete="document.getElementsByClassName('tooltipeliminar#{rowIndex}')[0].style='display:none'"
+									update="solicitudArchivos" partialSubmit="true" process="solicitudArchivos" />
+								<p:tooltip id="tooltipeliminar#{rowIndex}" widgetVar="tooltipeliminar#{rowIndex}" for="btnEliminarArchivo"
+									styleClass="tooltipeliminar#{rowIndex}" value="#{msg.btn_eliminar}" position="left" />
+							</p:column>
+
+						</p:dataTable>
+
+					</div>
+				</div>
+
+				<div class="ui-lg-12">
+					<div class="ui-g-12 ui-lg-12 ui-md-12" style="width: auto; float: right;">
+						<p:fileUpload fileUploadListener="#{altaSolicitudInstrumentoController.handleFileUpload}" mode="advanced"
+							dragDropSupport="false" multiple="false" auto="true" update="solicitudArchivos"
+							label="#{msg.solicitud_informe_correspondencia_btn_subir_archivo}" />
+					</div>
+
+				</div>
+				<div style="clear: both" />
+
+				<div class="ui-g-12">
+
+					<div class="ui-g-12 ui-md-6 ui-lg-6">
+						<div class="ui-g-12 ui-md-3 ui-lg-3 etiquetaform">#{msg.solicitud_informe_correspondencia_txt_nro_oficio}</div>
+						<div class="ui-g-12 ui-md-3 ui-lg-3">
+							<p:inputText id="oficio" placeholder="#{msg.solicitud_informe_correspondencia_txt_nro_oficio}"
+								value="#{altaSolicitudInstrumentoController.nroOficio}" autocomplete="off">
+								
+							</p:inputText>
+							<p:message id="errormsgficio" for="oficio" />
+						</div>
+					</div>
+
+					<div class="ui-g-12 ui-md-6 ui-lg-6">
+						<div class="ui-g-12 ui-md-9 ui-lg-9" style="width: auto;">
+							<p:fileUpload fileUploadListener="#{altaSolicitudInstrumentoController.handleFileUploadOficio}" mode="advanced"
+								dragDropSupport="false" multiple="false" auto="true"
+								update=":solicitudInformeCorrespondencia:solicitudArchivosOficio"
+								label="#{msg.solicitud_informe_correspondencia_btn_subir_oficio}" />
+						</div>
+
+						<h:panelGroup layout="block" class="ui-g-12 ui-md-3 ui-lg-3" style="width: auto; padding: 0"
+							id="solicitudArchivosOficio">
+							<h:panelGroup rendered="#{altaSolicitudInstrumentoController.solicitudOficioDto != null}">
+								#{altaSolicitudInstrumentoController.solicitudOficioDto.nombreArchivo}
+									<ui:include src="/view/template/downloadTemplate.xhtml">
+									<ui:param name="form" value="#{false}" />
+									<ui:param name="styleClass" value="downloadButtonTable" />
+									<ui:param name="file" value="#{altaSolicitudInstrumentoController.solicitudOficioDto}" />
+									<ui:param name="id" value="oficio" />
+								</ui:include>
+							</h:panelGroup>
+						</h:panelGroup>
+					</div>
+
+				</div>
+
+
+				<div class="ui-g-12">
+					<div class="ui-g-12 ui-md-3 ui-lg-3">
+						<div class="ui-g-12 ui-md-3 ui-lg-3" />
+						<div class="ui-g-12 ui-md-3 ui-lg-3" style="width: auto;">
+							<p:commandButton styleClass="boton-redondeado-verde" value="#{msg.solicitud_informe_correspondencia_btn_enviar}"
+								actionListener="#{altaSolicitudInstrumentoController.enviar}" style="font-size: 12pt;"
+								update="solicitudInformeCorrespondencia" />
+							
+						</div>
+					</div>
+				</div>
+
+			</h:form>
+			 <h:form>
+                <div style="float: right; margin-top: 20px; margin-bottom: 12px">
+                   <p:button styleClass="boton-redondeado-verde" value="#{msg.btn_volver}" onclick="history.go(-1); return false;"
+								style="font-size: 12pt;" />
+                </div>
+            </h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

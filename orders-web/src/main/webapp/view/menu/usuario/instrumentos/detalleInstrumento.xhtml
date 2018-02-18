@@ -1,0 +1,487 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:body>
+    <ui:composition template="/view/template/mainLayout.xhtml">
+
+        <ui:define name="title">#{msg.detalle_instrumento}</ui:define>
+        <ui:define name="style">
+            <style type="text/css">
+                #hr-tabs {
+                    position: relative;
+                    top: -9px;
+                    z-index: 1;
+                    color: #D6D6D6;
+                }
+
+                .ui-state-active {
+                    z-index: 2;
+                }
+            </style>
+        </ui:define>
+        <ui:define name="script">
+            <script type="text/javascript">
+              function dibujarHr() {
+                var element = document
+                .getElementsByClassName("ui-tabs-nav");
+                var para = document.createElement("hr");
+                para.id = "hr-tabs";
+                if (element[0] !== undefined) {
+                  element[0].appendChild(para);
+                }
+              }
+
+              $(document).ready(function () {
+                dibujarHr();
+              });
+            </script>
+        </ui:define>
+        <ui:define name="content">
+
+            <f:metadata>
+                <f:event type="preRenderView"
+                         listener="#{detalleInstrumentoController.preRenderView}"/>
+            </f:metadata>
+            <div style="clear: both"></div>
+
+            <script type="text/javascript">
+              dibujarHr();
+            </script>
+            <p:tabView id="tabs" widgetVar="instrumentoTabs"
+                       onTabChange="$('#messageContent').html('');"
+                       activeIndex="#{detalleInstrumentoController.tabActiveIndex}">
+                <p:tab title="#{msg.instrumento_tab_comunicacion_inicio}" style="display: block;">
+                    <h:form id="detalleInstrumento">
+                        <div class="ui-lg-12">
+
+                            <div class="ui-g-4 ui-md-4 ui-lg-4">
+                                <div class="ui-g-12 ui-md-12 ui-lg-12" style="padding: 0">
+                                    <div class="ui-g-3 ui-md-3 ui-lg-3 etiquetaform">#{msg.instrumento_form_fecha_inicio}</div>
+                                    <div class="ui-g-9 ui-md-9 ui-lg-9">
+                                        <p:inputText id="fechainicio"
+                                                     value="#{detalleInstrumentoController.instrumento.creado}"
+                                                     disabled="true"
+                                                     autocomplete="off" style="opacity: 1;">
+                                            <f:convertDateTime pattern="dd-MM-yyyy"/>
+                                        </p:inputText>
+                                    </div>
+                                </div>
+                                <div class="ui-g-12 ui-md-12 ui-lg-12" style="padding: 0">
+                                    <div class="ui-g-3 ui-md-3 ui-lg-3 etiquetaform">#{msg.instrumento_form_organismo}</div>
+                                    <div class="ui-g-9 ui-md-9 ui-lg-9">
+                                        <p:inputText placeholder="#{msg.convenio_form_organismo}"
+                                                     value="#{detalleInstrumentoController.instrumento.organismo.nombre}"
+                                                     disabled="true" autocomplete="off"
+                                                     style="opacity: 1;"/>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="ui-g-6 ui-md-6 ui-lg-6">
+                                <div class="ui-g-12 ui-md-12 ui-lg-12" style="padding: 0">
+                                    <div class="ui-g-3 ui-md-3 ui-lg-3 etiquetaform">#{msg.instrumento_form_tipo}</div>
+                                    <div class="ui-g-12 ui-md-6 ui-lg-6">
+                                        <p:selectOneMenu id="tipoInstrumento"
+                                                         disabled="#{not detalleInstrumentoController.esIntendencia}"
+                                                         value="#{detalleInstrumentoController.instrumento.tipo}"
+                                                         style="opacity: 1;"
+                                                         required="#{not detalleInstrumentoController.esTecnico}"
+                                                         requiredMessage="#{msg.instrumento_form_tipo_validacion}">
+                                            <f:selectItem
+                                                    itemLabel="#{msg.instrumento_form_select}"/>
+                                            <f:selectItems
+                                                    value="#{detalleInstrumentoController.tipos}"/>
+                                            <p:clientValidator event="change"/>
+                                        </p:selectOneMenu>
+                                        <p:message id="errormsgtipoInstr" for="tipoInstrumento"
+                                                   rendered="#{detalleInstrumentoController.esIntendencia}"/>
+                                    </div>
+                                </div>
+
+                                <div class="ui-g-12 ui-md-12 ui-lg-12" style="padding: 0">
+                                    <div class="ui-g-3 ui-md-3 ui-lg-3 etiquetaform">#{msg.instrumento_form_oficio}</div>
+                                    <div class="ui-g-12 ui-md-6 ui-lg-6">
+                                        <p:inputText id="oficio"
+                                                     placeholder="#{msg.instrumento_form_oficio}"
+                                                     value="#{detalleInstrumentoController.instrumento.oficio}"
+                                                     disabled="#{not detalleInstrumentoController.esIntendencia}"
+                                                     required="true"
+                                                     requiredMessage="#{msg.campo_requerido}"
+                                                     autocomplete="off"
+                                                     validator="accsa.NoBlancosValidator"
+                                                     validatorMessage="#{msg.campo_banco}"
+                                                     style="opacity: 1;">
+                                            <p:clientValidator event="keyup"/>
+                                        </p:inputText>
+                                        <p:message id="errormsgficio" for="oficio"
+                                                   rendered="#{detalleInstrumentoController.esIntendencia}"/>
+                                    </div>
+                                </div>
+                                <div class="ui-g-12 ui-md-12 ui-lg-12" style="padding: 0">
+                                    <h:panelGroup
+                                            rendered="#{detalleInstrumentoController.esDinama}"
+                                            class="ui-g-3 ui-md-3 ui-lg-3 etiquetaform">#{msg.instrumento_form_gex}</h:panelGroup>
+                                    <div class="ui-g-12 ui-md-6 ui-lg-6">
+                                        <p:inputText id="gex"
+                                                     rendered="#{detalleInstrumentoController.esDinama}"
+                                                     placeholder="#{msg.instrumento_form_gex}"
+                                                     value="#{detalleInstrumentoController.instrumento.expediente}"
+                                                     disabled="#{!detalleInstrumentoController.esMesaDeEntrada}"
+                                                     required="true"
+                                                     requiredMessage="#{msg.campo_requerido}"
+                                                     autocomplete="off"
+                                                     validator="accsa.NoBlancosValidator"
+                                                     validatorMessage="#{msg.campo_banco}"
+                                                     style="opacity: 1;"/>
+                                        <p:message id="errormsggex" for="gex"
+                                                   rendered="#{detalleInstrumentoController.esDinama}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="width: 100%">
+                                <div class="ui-g-12 ui-md-12 ui-lg-12" style="width: 70%;">
+                                    <p:dataTable id="instrumentoArchivos" var="instrumentoArchivo"
+                                                 value="#{detalleInstrumentoController.archivosComInit}"
+                                                 emptyMessage=""
+                                                 class="tabla"
+                                                 editable="#{detalleInstrumentoController.esIntendencia}"
+                                                 editMode="cell"
+                                                 filteredValue="#{convenioController.conveniosFiltrados}"
+                                                 rows="10"
+                                                 rowIndexVar="rowIndex"
+                                                 paginator="true"
+                                                 reflow="true"
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink}  {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 rowsPerPageTemplate="5,10,15,25,50"
+                                                 currentPageReportTemplate="{currentPage} #{msg.de} {totalPages}"
+                                                 paginatorPosition="bottom"
+                                                 sortBy="#{instrumentoArchivo.modificado}"
+                                                 sortOrder="DESCENDING">
+
+                                        <p:ajax event="cellEdit"/>
+
+                                        <p:column
+                                                headerText="#{msg.aprobacionPrevia_tabla_header_fecha}">
+                                            <h:outputText value="#{instrumentoArchivo.modificado}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column
+                                                headerText="#{msg.aprobacionPrevia_tabla_header_nombre}">
+                                            <h:outputText value="#{instrumentoArchivo.nombre}"/>
+                                        </p:column>
+
+                                        <p:column
+                                                headerText="#{msg.aprobacionPrevia_tabla_header_descripcion}">
+                                            <p:cellEditor
+                                                    rendered="#{!detalleInstrumentoController.esTecnico}">
+                                                <f:facet name="output">
+                                                    <h:outputText
+                                                            value="#{instrumentoArchivo.descripcion}"/>
+                                                </f:facet>
+                                                <f:facet name="input">
+                                                    <p:inputText
+                                                            value="#{instrumentoArchivo.descripcion}"
+                                                            autocomplete="off" style="width:96%"/>
+                                                </f:facet>
+                                            </p:cellEditor>
+                                            <h:outputText value="#{instrumentoArchivo.descripcion}"
+                                                          rendered="#{detalleInstrumentoController.esTecnico}"/>
+                                        </p:column>
+
+                                        <p:column
+                                                headerText="#{msg.aprobacionPrevia_tabla_header_ver}">
+                                            <ui:include src="/view/template/downloadTemplate.xhtml">
+                                                <ui:param name="form" value="#{false}"/>
+                                                <ui:param name="styleClass"
+                                                          value="downloadButtonTable"/>
+                                                <ui:param name="file"
+                                                          value="#{instrumentoArchivo}"/>
+                                            </ui:include>
+                                        </p:column>
+
+                                        <p:column
+                                                rendered="#{detalleInstrumentoController.esIntendencia}"
+                                                headerText="#{msg.aprobacionPrevia_tabla_header_eliminar}">
+                                            <p:commandButton id="btneliminararchivo2"
+                                                             icon="fa fa-trash-o"
+                                                             actionListener="#{detalleInstrumentoController.eliminarArchivoComInit(instrumentoArchivo)}"
+                                                             oncomplete="document.getElementsByClassName('tooltipeliminar#{rowIndex}')[0].style='display:none'"
+                                                             update="instrumentoArchivos"
+                                                             partialSubmit="true"
+                                                             process="instrumentoArchivos"/>
+                                            <p:tooltip id="tooltipeliminar"
+                                                       widgetVar="tooltipeliminar"
+                                                       for="btneliminararchivo2"
+                                                       styleClass="tooltipeliminar#{rowIndex}"
+                                                       value="#{msg.btn_eliminar}" position="left"/>
+                                        </p:column>
+
+                                    </p:dataTable>
+
+                                    <div class="ui-g-12 ui-lg-12 ui-md-12"
+                                         style="width: auto; float: right; padding-right: 0;">
+                                        <p:fileUpload
+                                                rendered="#{detalleInstrumentoController.esIntendencia}"
+                                                fileUploadListener="#{detalleInstrumentoController.handleFileUpload}"
+                                                mode="advanced" dragDropSupport="false"
+                                                multiple="false" auto="true"
+                                                update="instrumentoArchivos"
+                                                label="#{msg.btn_subir}">
+                                            <f:attribute name="etapa" value="COMUNICACION_INICIO"/>
+                                        </p:fileUpload>
+                                    </div>
+                                    <div class="ui-g-12 ui-lg-12 ui-md-12"
+                                         style="padding-right: 0;">
+                                        <p:commandButton
+                                                rendered="#{detalleInstrumentoController.esIntendencia}"
+                                                styleClass="boton-redondeado-verde"
+                                                value="#{msg.com_inicio_btn_comunicar}"
+                                                actionListener="#{detalleInstrumentoController.notificar}"
+                                                style="font-size: 12pt; float: right;"
+                                                update="detalleInstrumento"/>
+                                        <p:commandButton
+                                                rendered="#{detalleInstrumentoController.esIntendencia}"
+                                                styleClass="boton-redondeado-verde"
+                                                value="#{msg.instrumento_guardar_borrador}"
+                                                actionListener="#{detalleInstrumentoController.guardarBorrador}"
+                                                style="font-size: 12pt; float: right"
+                                                update="detalleInstrumento"/>
+                                        <p:commandButton
+                                                rendered="#{detalleInstrumentoController.esMesaDeEntrada}"
+                                                styleClass="boton-redondeado-verde"
+                                                value="#{msg.instrumento_guardar_borrador}"
+                                                actionListener="#{detalleInstrumentoController.aEjecucion}"
+                                                style="font-size: 12pt; float: right"
+                                                update="detalleInstrumento"/>
+                                    </div>
+                                </div>
+
+                                <h:panelGroup rendered="#{!detalleInstrumentoController.esTecnico}">
+                                    <div style="text-align: left; width: 30%; float: right;">
+                                        <p>#{msg.com_inicio_txt_comentario_1}</p>
+                                        <p>
+                                            <b>#{msg.com_inicio_txt_pto1}</b>
+                                        </p>
+                                        <p>
+                                            <b>#{msg.com_inicio_txt_pto2}</b>
+                                        </p>
+                                    </div>
+                                </h:panelGroup>
+                            </div>
+                        </div>
+                    </h:form>
+                </p:tab>
+                <p:tab title="#{msg.instrumento_tab_puesta_manifiesto}"
+                       rendered="#{detalleInstrumentoController.manifiestoVisible}">
+                    <div class="ui-g-12 ui-md-12 ui-lg-6 detalleGrilla"
+                         style="margin-top: 20px; width: 100%;">
+                        <ui:include src="/view/menu/usuario/instrumentos/puestaManifiesto.xhtml"/>
+                    </div>
+                </p:tab>
+                <p:tab title="#{msg.instrumento_tab_aprobacion_previa}"
+                       rendered="#{detalleInstrumentoController.aprobacionVisible}">
+                    <div class="ui-g-12 ui-md-12 ui-lg-6 detalleGrilla"
+                         style="margin-top: 20px; width: 100%;">
+                        <ui:include src="/view/menu/usuario/instrumentos/aprobacionPrevia.xhtml"/>
+                    </div>
+                </p:tab>
+                <p:tab title="#{msg.instrumento_tab_audiencia_publica}"
+                       rendered="#{detalleInstrumentoController.audienciaVisible}">
+                    <div class="ui-g-12 ui-md-12 ui-lg-6 detalleGrilla"
+                         style="margin-top: 20px; width: 100%;">
+                        <ui:include src="/view/menu/usuario/instrumentos/audienciaPublica.xhtml">
+                            <ui:param name="instrumento"
+                                      value="#{detalleInstrumentoController.instrumento.id}"/>
+                        </ui:include>
+                    </div>
+                </p:tab>
+                <p:tab title="#{msg.instrumento_tab_incidencia_territorial}"
+                       rendered="#{detalleInstrumentoController.incidenciaVisible}">
+                    <div class="ui-g-12 ui-md-12 detalleGrilla"
+                         style="margin-top: 20px; width: 70%;">
+                        <ui:include
+                                src="/view/menu/usuario/instrumentos/incidenciaTerritorial.xhtml">
+                            <ui:param name="instrumento"
+                                      value="#{detalleInstrumentoController.instrumento.id}"/>
+                        </ui:include>
+                    </div>
+                </p:tab>
+                <p:tab title="#{msg.instrumento_tab_solicitudes}"
+                       rendered="#{detalleInstrumentoController.solicitudesVisible}">
+                    <h:form>
+                        <div class="ui-g-12 ui-md-12 ui-lg-12 detalleGrilla"
+                             style="margin-top: 20px">
+                            <h:outputText
+                                    value="#{msg.instrumento_solicitud_titulo}"/>
+                        </div>
+                        <div class="ui-g-8 ui-md-12 ui-lg-8 detalleGrilla">
+                            <p:dataTable var="archivo"
+                                         value="#{detalleInstrumentoController.archivosSolicitud}"
+                                         emptyMessage=""
+                                         class="tabla"
+                                         rows="10"
+                                         rowIndexVar="rowIndex"
+                                         widgetVar="archivosSolTable"
+                                         editable="#{detalleInstrumentoController.esIntendencia}"
+                                         editMode="cell"
+                                         paginator="true"
+                                         reflow="true"
+                                         id="archivosSol"
+                                         sortBy="#{archivo.modificado}"
+                                         sortOrder="DESCENDING"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink}  {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15,25,50"
+                                         currentPageReportTemplate="{currentPage} #{msg.de} {totalPages}"
+                                         paginatorPosition="bottom">
+
+                                <p:ajax event="cellEdit"/>
+
+                                <p:column headerText="#{msg.tabla_convenios_fecha}">
+                                    <h:outputText value="#{archivo.modificado}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="#{msg.tabla_convenios_nombre}">
+                                    <h:outputText value="#{archivo.nombre}"/>
+                                </p:column>
+                                <p:column headerText="#{msg.convenio_archivo_descripcion}">
+                                    <p:cellEditor
+                                            rendered="#{!detalleInstrumentoController.esTecnico}">
+                                        <f:facet name="output">
+                                            <h:outputText value="#{archivo.descripcion}"/>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="#{archivo.descripcion}"
+                                                         style="width:96%" autocomplete="off"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                    <h:outputText value="#{archivo.descripcion}"
+                                                  rendered="#{detalleInstrumentoController.esTecnico}"/>
+                                </p:column>
+                                <p:column headerText="#{msg.instrumento_gral_tabla_header_ver}">
+                                    <ui:include src="/view/template/downloadTemplate.xhtml">
+                                        <ui:param name="form" value="#{false}"/>
+                                        <ui:param name="styleClass" value="downloadButtonTable"/>
+                                        <ui:param name="file" value="#{archivo}"/>
+                                    </ui:include>
+                                </p:column>
+                                <p:column headerText="#{msg.instrumento_gral_tabla_header_eliminar}">
+                                    <p:commandButton id="btneliminararchivo" icon="fa fa-trash-o"
+                                                     actionListener="#{detalleInstrumentoController.eliminarArchivo(archivo, 'SOLICITUDES')}"
+                                                     rendered="#{detalleInstrumentoController.esIntendencia}"
+                                                     update="archivosSol"
+                                                     oncomplete="document.getElementsByClassName('tooltipeliminarSol#{rowIndex}')[0].style='display:none'">
+                                    </p:commandButton>
+                                    <p:tooltip id="tooltipeliminarSol#{rowIndex}"
+                                               widgetVar="tooltipeliminarSol#{rowIndex}"
+                                               for="btneliminararchivo"
+                                               styleClass="tooltipeliminarSol#{rowIndex}"
+                                               value="#{msg.btn_eliminar}"
+                                               position="left"/>
+                                </p:column>
+
+                            </p:dataTable>
+                            <div class="ui-g-12 ui-lg-12 ui-md-12"
+                                 style="width: auto; float: right; padding-right: 0;">
+                                <p:fileUpload
+                                        fileUploadListener="#{detalleInstrumentoController.handleFileUpload}"
+                                        mode="advanced"
+                                        dragDropSupport="false" multiple="false" auto="true"
+                                        update="archivosSol"
+                                        rendered="#{detalleInstrumentoController.esIntendencia}"
+                                        label="#{msg.btn_subir}">
+                                    <f:attribute name="etapa" value="SOLICITUDES"/>
+                                </p:fileUpload>
+                            </div>
+                             <div class="ui-g-12 ui-lg-12 ui-md-12" style="padding-right: 0;">
+                              <p:commandButton styleClass="boton-redondeado-verde"
+                                                 value="#{msg.btn_guardar}"
+                                                 rendered="#{detalleInstrumentoController.esIntendencia  and (not empty detalleInstrumentoController.archivosSolicitud)}"
+                                                 actionListener="#{detalleInstrumentoController.guardarSolicitudes}"
+                                                 style="font-size: 12pt; float: right;">
+                                </p:commandButton>
+                             </div>
+                            <div class="ui-g-12 ui-lg-12 ui-md-12" style="padding-right: 0;">
+                                <p:commandButton styleClass="boton-redondeado-verde"
+                                                 value="#{msg.btn_solicitar_aprobacion_eae}"
+                                                 rendered="#{detalleInstrumentoController.esIntendencia and not detalleInstrumentoController.instrumentoTieneSolicitudAprobacionEae}"
+                                                 actionListener="#{detalleInstrumentoController.solicitarAprobacionEae}"
+                                                 style="font-size: 12pt; float: right;">
+                                </p:commandButton>
+
+                                <p:button style="font-size: 12pt; float: right;"
+                                          styleClass="boton-redondeado-verde"
+                                          value="#{msg.btn_ver_solicitud_aprobacion_eae}"
+                                          outcome="#{OC.procesamientodesolicitud}"
+                                          rendered="#{detalleInstrumentoController.instrumentoTieneSolicitudAprobacionEae}">
+                                    <f:param name="solicitudId"
+                                             value="#{detalleInstrumentoController.idSolEAE}"/>
+                                </p:button>
+
+                                <p:commandButton styleClass="boton-redondeado-verde"
+                                                 value="#{msg.btn_solicitar_informe_correspondencia}"
+                                                 rendered="#{detalleInstrumentoController.esIntendencia and not detalleInstrumentoController.instrumentoTieneSolicitudInformeCorrespondencia}"
+                                                 actionListener="#{detalleInstrumentoController.solicitarInformeCorrespondencia}"
+                                                 style="font-size: 12pt; float: right;">
+                                </p:commandButton>
+
+                                <p:button style="font-size: 12pt; float: right;"
+                                          styleClass="boton-redondeado-verde"
+                                          value="#{msg.btn_ver_solicitud_informe_correspondencia}"
+                                          outcome="#{OC.procesamientodesolicitud}"
+                                          rendered="#{detalleInstrumentoController.instrumentoTieneSolicitudInformeCorrespondencia}">
+                                    <f:param name="solicitudId"
+                                             value="#{detalleInstrumentoController.idSolIC}"/>
+                                </p:button>
+
+                            </div>
+                        </div>
+                        <h:panelGroup rendered="#{!detalleInstrumentoController.esTecnico}">
+                            <div class="ui-md-12 ui-lg-4"
+                                 style="width: 30%; float: right; text-align: left;">
+                                <h:outputText escape="false"
+                                              value="#{msg.instrumento_solicitud_texto}"/>
+                                <br/> <br/>
+                                <span><strong>-OFICIO DE SOLICITUD DE APROBACIÃ“N DE LA EAE.</strong></span><br/>
+                                <br/> <span><strong>-ÃšLTIMA
+										VERSIÃ“N DEL PROYECTO DEL IOT.</strong> (INCLUYE: ÃšLTIMA VERSIÃ“N DEL PROYECTO DE DECRETOS, MEMORIAS Y CARTOGRAFÃ�A).</span><br/>
+                                <br/>
+                                <span><strong>-ÃšLTIMA VERSIÃ“N DEL INFORME AMBIENTAL ESTRATÃ‰GICO.</strong></span><br/>
+                                <br/> <span><strong>-INFORME
+										DE INCIDENCIA TERRITORIALES.</strong></span><br/> <br/>
+                                <span><strong>-MEMORIA DEL PROCESO.</strong></span><br/> <br/>
+                            </div>
+                        </h:panelGroup>
+                    </h:form>
+                </p:tab>
+                <p:tab title="#{msg.instrumento_tab_notificaciones}"
+                       rendered="#{detalleInstrumentoController.notificacionesVisible}">
+                    <div style="margin-top: 20px;">
+                        <ui:include
+                                src="/view/menu/usuario/instrumentos/instrumentoNotificaciones.xhtml">
+                            <ui:param name="instrumento"
+                                      value="#{detalleInstrumentoController.instrumento.id}"/>
+                        </ui:include>
+                    </div>
+                </p:tab>
+
+            </p:tabView>
+
+
+            <div style="clear: both"/>
+            <h:form>
+                <div style="float: right; margin-top: 20px; margin-bottom: 12px">
+                    <p:button styleClass="boton-redondeado-verde" value="#{msg.btn_volver}"
+                              outcome="#{OC.listadoInstrumentos}"/>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</h:body>
+</html>

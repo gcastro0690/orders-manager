@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+<h:body>
+
+	<ui:composition template="/view/template/mainLayout.xhtml">
+		<ui:define name="title">#{msg.instrumentos_notificaciones_tit_crear}</ui:define>
+		<ui:define name="content">
+			<h:form id="notificaciones">
+				<div style="margin-top: 30px; margin-left: 15px">
+
+					<h:outputText value="NOTIFICACIONES:" style="font-size: 20px !important;" />
+
+					<p />
+					<h:outputLabel for="etapa" value="Etapa:" style="margin-right: 12px;font-size: 16px;font-weight: bold" />
+					<p:selectOneMenu disabled="#{!crearNotificacionesInstrController.editable}"
+						value="#{crearNotificacionesInstrController.notificacion.etapa}" style="width:160px" id="etapa">
+						<f:selectItems value="#{detalleInstrumentoController.etapasNotificaciones}" />
+					</p:selectOneMenu>
+
+					<p />
+					<h:outputLabel value="Texto:" style="margin-right: 12px;font-size: 16px;font-weight: bold" />
+					<p />
+					<p:inputTextarea id="asunto" value="#{crearNotificacionesInstrController.notificacion.asunto}"
+						style="resize: none; height: 250px; width: 55.5%;opacity: 1;" autoResize="false" autocomplete="off"
+						disabled="#{!crearNotificacionesInstrController.editable}" />
+
+					<p />
+
+					<h:panelGroup layout="block" class="ui-g-2 ui-md-2 ui-lg-2"
+						rendered="#{crearNotificacionesInstrController.editable}">
+						<p:commandButton styleClass="boton-redondeado-verde" value="#{msg.notif_instr_adjuntar_archivo}"
+							style="font-size: 9pt;" onclick="PF('dlgArchivoFirmado').show();" />
+					</h:panelGroup>
+					<h:panelGroup layout="block" id="link" class="ui-g-4 ui-md-4 ui-lg-4">
+						<h:outputLabel for="archivoFirmadoNombre" value="Adjunto:"
+							style="margin-right: 12px;font-size: 16px;font-weight: bold"
+							rendered="#{crearNotificacionesInstrController.archivoSubido}" />
+						<h:outputText value="#{crearNotificacionesInstrController.notificacion.archivo.nombre}"
+							rendered="#{crearNotificacionesInstrController.archivoSubido}" />
+						<p:button icon="fa fa-download" target="_blank" styleClass="boton-redondeado-verde" style="margin-left: 10px;margin-top: 0px "
+							href="#{crearNotificacionesInstrController.notificacion.archivo.url}" id="boton1"
+							rendered="#{crearNotificacionesInstrController.archivoSubido}"></p:button>
+					</h:panelGroup>
+
+					<p:dialog header="#{msg.notif_instr_adjuntar_archivo}" widgetVar="dlgArchivoFirmado" modal="true" resizable="false"
+						closable="false" closeOnEscape="true" width="500px" draggable="false">
+						<h:panelGrid columns="2" cellpadding="5">
+							<p:fileUpload fileUploadListener="#{crearNotificacionesInstrController.handleFileUploadFirmado}" mode="advanced"
+								dragDropSupport="false" multiple="false" auto="true" update="notificaciones:link" label="#{msg.btn_subir}"
+								oncomplete="PF('dlgArchivoFirmado').hide();" />
+
+							<f:facet name="footer">
+								<p:commandButton value="#{msg.btn_volver}" styleClass="boton-redondeado-verde" style="font-size: 12pt;"
+									onclick="PF('dlgArchivoFirmado').hide();" />
+							</f:facet>
+						</h:panelGrid>
+					</p:dialog>
+
+					<div style="clear: both" />
+
+					<div class="ui-g-6 ui-md-12 ui-lg-6">
+						<p:commandButton id="guardar" styleClass="boton-redondeado-verde" value="ENVIAR"
+							actionListener="#{crearNotificacionesInstrController.guardarNotificacion}"
+							style="font-size: 12pt;margin-top:15px;" update="notificaciones"
+							rendered="#{crearNotificacionesInstrController.editable}" />
+					</div>
+				</div>
+			</h:form>
+			<div style="float: right; margin-top: 14px; margin-bottom: 5px">
+				<p:button styleClass="boton-redondeado-verde" value="#{msg.btn_volver}" outcome="#{OC.detalleInstrumento}"
+					style="font-size: 12pt;">
+					<f:param name="instrumento" value="#{crearNotificacionesInstrController.instrumento.id}" />
+					<f:param name="tabIndex" value="#{crearNotificacionesInstrController.tabVolver}" />
+				</p:button>
+			</div>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

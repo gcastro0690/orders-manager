@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<f:metadata>
+	<f:viewAction action="#{procesamientoDeSolicitud.checkUsuarioIntendencia}" />
+</f:metadata>
+
+<h:body>
+	<ui:composition template="/view/template/mainLayout.xhtml">
+		<ui:define name="title">#{msg.txt_titulo_procesar_solicitud}</ui:define>
+		<ui:define name="content">
+
+			<style type="text/css">
+#hr-tabs {
+	position: relative;
+	top: -9px;
+	z-index: 1;
+	color: #D6D6D6;
+}
+
+.ui-state-active {
+	z-index: 2;
+}
+
+.ui-tabs-panels {
+	min-height: 500px;
+}
+</style>
+
+
+			<script type="text/javascript">
+				function dibujarHr() {
+					var element = document
+							.getElementsByClassName("ui-tabs-nav");
+					var para = document.createElement("hr");
+					para.id = "hr-tabs";
+					if (element[0] !== undefined) {
+						element[0].appendChild(para);
+					}
+				}
+
+				$(document).ready(function() {
+					dibujarHr();
+				});
+			</script>
+
+
+			<p:outputPanel>
+				<div class="tabla-header-titulo">
+					<div class="tabla-header-titulo-icon">
+						<em class="fa fa-pencil-square-o" />
+					</div>
+					<div class="tabla-header-titulo-titulo">#{msg.txt_titulo_procesar_solicitud}</div>
+				</div>
+			</p:outputPanel>
+
+			<div style="clear: both" />
+			<script type="text/javascript">
+				dibujarHr();
+			</script>
+			<p:tabView id="tabs" widgetVar="solicitudesTabs" onTabChange="$('#messageContent').html('');" activeIndex="1">
+				<p:tab title="#{msg.txt_tabs_archivos}" >
+					<div class="ui-g-12 ui-md-12 ui-lg-6 detalleGrilla" style="margin-top: 20px; width: 100%;">
+						<ui:include src="/view/menu/usuario/instrumentos/solicitudInstrumentoArchivos.xhtml">
+							<ui:param name="solId" value="#{procesamientoDeSolicitud.solId}" />
+						</ui:include>
+					</div>
+
+				</p:tab>
+				<p:tab title="#{ procesamientoDeSolicitud.informeCorr ?  msg.txt_tabs_info_corr : msg.txt_tabs_aprob_EAE}">
+					<div class="ui-g-12 ui-md-12 ui-lg-6 detalleGrilla" style="margin-top: 20px; width: 100%;">
+						<ui:include src="/view/menu/usuario/instrumentos/solicitudInstumentoDatos.xhtml">
+							<ui:param name="solId" value="#{procesamientoDeSolicitud.solId}" />
+						</ui:include>
+					</div>
+
+				</p:tab>
+
+				<p:tab title="#{msg.txt_tabs_vista}" >
+					<div class="ui-g-12 ui-md-12 ui-lg-6 detalleGrilla" style="margin-top: 20px; width: 100%;">
+						<ui:include src="/view/menu/usuario/instrumentos/solicitudInstrumentoVistas.xhtml">
+							<ui:param name="solId" value="#{procesamientoDeSolicitud.solId}" />
+						</ui:include>
+					</div>
+
+				</p:tab>
+			</p:tabView>
+			<div style="clear: both" />
+			<h:form>
+				<div style="float: right; margin-top: 20px; margin-bottom: 12px">
+					<p:button styleClass="boton-redondeado-verde" value="#{msg.btn_volver}" onclick="history.go(-1); return false;" />
+				</div>
+			</h:form>
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+</html>

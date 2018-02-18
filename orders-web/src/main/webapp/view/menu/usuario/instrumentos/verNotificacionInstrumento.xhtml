@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+<h:body>
+
+	<ui:composition template="/view/template/mainLayout.xhtml">
+		<ui:define name="title">#{msg.instrumentos_notificaciones_tit_ver}</ui:define>
+		<ui:define name="content">
+
+			<div style="margin-top: 30px; margin-left: 15px">
+
+				<h:outputText value="NOTIFICACIÓN:" style="font-size: 20px !important;" />
+
+				<p />
+				<h:outputLabel for="etapa" value="Etapa:" style="margin-right: 12px;font-size: 16px;font-weight: bold" />
+				<h:outputText value="#{verNotificacionesInstrController.notificacion.etapa.etapa}" style="width: 50%" id="etapa" />
+
+
+				<p />
+				<h:outputLabel value="Texto:" style="margin-right: 12px;font-size: 16px;font-weight: bold" />
+				<p />
+				<p:inputTextarea id="asunto" value="#{verNotificacionesInstrController.notificacion.asunto}"
+					style="resize: none; height: 250px; width: 55.5%;opacity: 1;" autoResize="false" autocomplete="off" disabled="true" />
+
+				<p />
+
+				<h:panelGroup layout="block" id="link" class="ui-g-4 ui-md-4 ui-lg-4" style="margin-top:0px"
+					rendered="#{verNotificacionesInstrController.notificacion.archivo != null}">
+					<h:outputLabel for="archivoFirmadoNombre" value="Adjunto:"
+						style="margin-right: 12px;font-size: 16px;font-weight: bold"
+						rendered="#{verNotificacionesInstrController.notificacion.archivo.nombre != null}" />
+
+					<h:outputText value="#{verNotificacionesInstrController.notificacion.archivo.nombre}"
+						rendered="#{verNotificacionesInstrController.notificacion.archivo != null}" />
+					<p:button icon="fa fa-download" target="_blank" href="#{verNotificacionesInstrController.notificacion.archivo.url}"
+						id="boton1" rendered="#{verNotificacionesInstrController.notificacion.archivo != null}" styleClass="boton-redondeado-verde" style="margin-left: 10px;margin-top: 0px "></p:button>
+
+				</h:panelGroup>
+			</div>
+
+			<div style="clear: both" />
+
+			<h:panelGroup layout="block" id="panelRespuesta" rendered="#{verNotificacionesInstrController.verRespuesta}">
+				<h:form id="notificaciones">
+					<div style="margin-top: 30px; margin-left: 15px">
+
+						<h:outputText value="RESPUESTA:" style="font-size: 20px !important;" />
+
+						<p />
+
+						<p:inputTextarea id="respuesta" value="#{verNotificacionesInstrController.notificacion.respuesta}"
+							style="resize: none; height: 250px; width: 55.5%;opacity: 1" autoResize="false" autocomplete="off"
+							disabled="#{!verNotificacionesInstrController.verEditarRespuesta}" />
+					</div>
+
+					<p />
+
+					<h:panelGroup rendered="#{verNotificacionesInstrController.verEditarRespuesta}" layout="block"
+						class="ui-g-2 ui-md-2 ui-lg-2">
+						<p:commandButton styleClass="boton-redondeado-verde" value="#{msg.notif_instr_adjuntar_archivo}"
+							style="font-size: 9pt;" onclick="PF('dlgArchivoFirmado').show();" />
+					</h:panelGroup>
+					<h:panelGroup layout="block" id="link2" class="ui-g-4 ui-md-4 ui-lg-4" style="margin-top: 0px;margin-left: 15px">
+						<h:outputLabel for="archivoFirmadoNombre2" value="Adjunto:"
+							style="margin-right: 12px;font-size: 16px;font-weight: bold"
+							rendered="#{verNotificacionesInstrController.archivoSubido}" />
+						<h:outputText value="#{verNotificacionesInstrController.notificacion.archivoRespuesta.nombre}"
+							rendered="#{verNotificacionesInstrController.archivoSubido}" />
+						<p:button icon="fa fa-download" target="_blank"
+							href="#{verNotificacionesInstrController.notificacion.archivoRespuesta.url}" id="boton2"
+							rendered="#{verNotificacionesInstrController.archivoSubido}" styleClass="boton-redondeado-verde" style="margin-left: 10px;margin-top: 0px "></p:button>
+					</h:panelGroup>
+
+					<p:dialog header="#{msg.notif_instr_adjuntar_archivo}" widgetVar="dlgArchivoFirmado" modal="true" resizable="false"
+						closable="false" closeOnEscape="true" width="500px" draggable="false"
+						rendered="#{verNotificacionesInstrController.verEditarRespuesta}">
+						<h:panelGrid columns="1" cellpadding="5">
+
+							<p:fileUpload fileUploadListener="#{verNotificacionesInstrController.handleFileUploadRespuesta}" mode="advanced"
+								dragDropSupport="false" multiple="false" auto="true" update="notificaciones:link2" label="#{msg.btn_subir}"
+								oncomplete="PF('dlgArchivoFirmado').hide();" />
+
+							<p:commandButton value="#{msg.btn_volver}" styleClass="boton-redondeado-verde" style="font-size: 12pt;"
+									onclick="PF('dlgArchivoFirmado').hide();return;" />
+						</h:panelGrid>
+					</p:dialog>
+					<div style="clear: both" />
+					<h:panelGroup class="ui-g-6 ui-md-12 ui-lg-6" style="margin-top: 0">
+
+						<p:commandButton rendered="#{verNotificacionesInstrController.verEditarRespuesta}" id="guardar"
+							styleClass="boton-redondeado-verde" value="ENVIAR RESPUESTA"
+							actionListener="#{verNotificacionesInstrController.guardarNotificacion}" style="font-size: 12pt;margin-top:15px;"
+							update="panelRespuesta" />
+
+					</h:panelGroup>
+				</h:form>
+			</h:panelGroup>
+
+
+			<div style="float: right; margin-top: 20px; margin-bottom: 12px">
+				<p:button styleClass="boton-redondeado-verde" value="#{msg.btn_volver}" outcome="#{OC.detalleInstrumento}"
+					style="font-size: 12pt;">
+					<f:param name="instrumento" value="#{verNotificacionesInstrController.instrumentoId}" />
+					<f:param name="tabIndex" value="#{verNotificacionesInstrController.tabVolver}" />
+				</p:button>
+			</div>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

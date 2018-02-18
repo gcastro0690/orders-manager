@@ -1,0 +1,152 @@
+/* Estilos para el diseño de los templates de JSF */
+.bodyfit {
+	margin:0px;
+}
+.top-menu {
+	position: relative;
+	height: 115px;
+	width: 100%;
+}
+.top-menu-logo {
+	height: 80px;
+}
+.pie-pagina {
+	bottom: 0px;
+	position:relative;
+	width: 100%;
+}
+.top-menu-actions {
+	width: 100%;
+	height: 100%;
+}
+
+#top {
+	position: relative;
+	background-color: white;
+	border-radius: 6px;
+	/*color: white;*/
+	margin: 0px 0px 6px 0px;
+	height: 80px;
+	display: flex;
+	width: 100%;
+}
+
+#bottom {
+	position: relative;
+	background-color: #c2dfef;
+	padding: 5px;
+	margin: 10px 0px 0px 0px;
+}
+
+#left {
+	float: left;
+	padding: 0px;
+	width: 180px;
+}
+
+#right {
+	float: right;
+	background-color: #ece3a5;
+	padding: 0px;
+	width: 150px;
+}
+
+.center_content {
+	position: relative;
+	background-color: #dddddd;
+	padding: 5px;
+}
+
+.right-content {
+	margin-left: 0%;
+	padding-right: 0px;
+	margin-top : 10%;
+}
+
+#top a:link, #top a:visited {
+	color: white;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+#top a:link:hover, #top a:visited:hover {
+	color: black;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+.menu {
+	width: 100%;
+}
+
+/* logo, header y status */
+.logo {
+	min-width: 262px;
+	margin-top: 2px;
+	margin-left: 1px;
+	height: 100%;
+}
+
+#top .header {
+	background: #fff;
+	width: 50%;
+	margin: auto;
+}
+
+div.header {
+	text-align: justify;
+}
+
+.status {
+	display: inline;
+	height: 60px;
+	width: auto;
+	margin: auto;
+	margin-right: 0px;
+}
+
+/* BasicLayout */
+.basicLayout_html {
+	/* 	background: url(../images/background/bk_login_1920x1200.jpg);*/ 
+	/* 	background: -webkit-radial-gradient(#476EA5, #335E9B); Safari 5.1 to 6.0 */
+	/* 	background: -o-radial-gradient(#476EA5, #335E9B); For Opera 11.6 to 12.0 */
+	/* 	background: -moz-radial-gradient(#476EA5, #335E9B); For Firefox 3.6 to 15 */
+	background:  #d0d3d4; /* Standard syntax (must be last) */
+	background-size: initial;
+}
+
+.basicLayout_body {
+	/*background: usrl(../images/background/bk_login_1920x1200.jpg);*/
+}
+
+div#pie {
+	padding: 10px 0 10px 0;
+	color: #FFFFFF;
+	background-color: #1E1E1E;
+	font-size: 8pt;
+	clear: both;
+	height: 85px;
+}
+
+div#pie .ui-grid-col-8{
+	padding-left: 10px;
+}
+.ui-g div{
+	margin: auto;
+}
+
+#pie .ui-grid {
+	background: #1E1E1E !important;
+}
+
+.align-pie-derecho {
+	text-align: right;
+	margin-right:20px;
+}
+@media ( max-width:400) {
+	.align-pie-derecho {
+		text-align: left;
+		margin-left:20px;
+		margin-top:20px;
+	}
+}

@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:body>
+	<ui:composition template="/view/template/mainLayout.xhtml">
+
+		<ui:define name="title">#{msg.listado_instrumentos}</ui:define>
+		<ui:define name="style">
+			<style>
+</style>
+		</ui:define>
+
+		<ui:define name="content">
+
+			<h:form>
+				<p:dataTable var="instrumento" value="#{instrumentoController.instrumentos}" emptyMessage="" class="tabla"
+					filteredValue="#{instrumentoController.instrumentosFiltrados}" widgetVar="instrumentosTable" rows="10"
+					paginator="true" reflow="true"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink}  {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,15,25,50" currentPageReportTemplate="{currentPage} #{msg.de} {totalPages}"
+					paginatorPosition="bottom" sortBy="#{instrumento.creado}" sortOrder="DESCENDING">
+					<f:facet class="tabla-header" name="header">
+						<p:outputPanel>
+							<div class="tabla-header-buscar-borde">
+								<div class="tabla-header-buscar-icon">
+									<i class="fa fa-search" />
+								</div>
+								<div class="tabla-header-buscar-input">
+									<p:inputText id="globalFilter" onkeyup="PF('instrumentosTable').filter()" placeholder="#{msg.tabla_buscar}"
+										autocomplete="off" />
+								</div>
+							</div>
+							<div style="clear: both" />
+						</p:outputPanel>
+					</f:facet>
+
+					<p:column filterBy="#{instrumento.oficio}" headerText="#{msg.tabla_convenios_oficio}" filterMatchMode="contains">
+						<h:outputText value="#{instrumento.oficio}" />
+					</p:column>
+
+					<p:column filterBy="#{instrumento.expediente}" headerText="#{msg.tabla_convenios_expediente}"
+						filterMatchMode="contains">
+						<h:outputText value="#{instrumento.expediente}" />
+					</p:column>
+
+					<p:column filterBy="#{instrumento.organismo.nombre}" headerText="#{msg.tabla_convenios_organismo}" filterMatchMode="contains">
+						<h:outputText value="#{instrumento.organismo.nombre}" />
+					</p:column>
+
+					<p:column filterBy="#{dateController.formadoFecha('dd/MM/yyyy HH:mm',instrumento.creado)}"
+						headerText="#{msg.tabla_convenios_fecha}" filterMatchMode="contains">
+						<h:outputText value="#{dateController.formadoFecha('dd/MM/yyyy HH:mm',instrumento.creado)}" />
+					</p:column>
+
+					<p:column filterBy="#{instrumento.estado.estado}" headerText="#{msg.tabla_convenios_estado}"
+						filterMatchMode="contains">
+						<h:outputText value="#{instrumento.estado.estado}" />
+					</p:column>
+
+					<p:column filterBy="#{instrumento.etapa.etapa}" headerText="#{msg.tabla_convenios_etapa}"
+						filterMatchMode="contains">
+						<h:outputText value="#{instrumento.etapa.etapa}" />
+					</p:column>
+
+					<p:column headerText="#{msg.tabla_convenios_acciones}">
+						<div class="ui-g">
+							<div class="ui-g-4 ui-md-4 ui-lg-4 padding-cero">
+								<p:button icon="fa fa-pencil" outcome="#{OC.detalleInstrumento}" id="boton1">
+									<f:param name="instrumento" value="#{instrumento.id}" />
+								</p:button>
+								<p:tooltip for="boton1" value="Ver/Editar Instrumento" position="left" />
+							</div>
+						</div>
+					</p:column>
+
+				</p:dataTable>
+
+				<div style="float: right; margin-top: 20px">
+					<p:button styleClass="boton-redondeado-verde" value="#{msg.elaborar_instrumento}"
+						outcome="#{OC.detalleInstrumento}" style="font-size: 12pt;margin-bottom:10px"
+						rendered="#{instrumentoController.puedeElaborar}" />
+				</div>
+				<div style="clear: both"></div>
+
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>
