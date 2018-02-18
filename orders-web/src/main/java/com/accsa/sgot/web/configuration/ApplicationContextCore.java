@@ -8,7 +8,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 @Configuration
-@ComponentScan("com.accsa.sgot")
+@ComponentScan("com.orders")
 @PropertySource(value = "classpath:/config/config.properties", ignoreResourceNotFound = false)
 @EnableAspectJAutoProxy // EstiloAspectJ de Spring AOP
 public class ApplicationContextCore {

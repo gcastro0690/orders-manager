@@ -144,7 +144,7 @@
 		<param-name>spring.profiles.active</param-name>
 		<param-value>
 			development,
- 			init-persistence-psql
+ 			init-persistence-mysql
 		</param-value>
 	</context-param>
 	<listener>

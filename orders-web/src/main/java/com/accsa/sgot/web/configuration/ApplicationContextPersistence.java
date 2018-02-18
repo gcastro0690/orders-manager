@@ -20,10 +20,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 @Configuration
-@Profile("init-persistence-psql")
+@Profile("init-persistence-mysql")
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "com.accsa.sgot.persistence.model.psql.repository",
-    entityManagerFactoryRef = "pSqlEmf")
+@EnableJpaRepositories(basePackages = "com.orders.persistence.model.mysql.repository",
+    entityManagerFactoryRef = "mySqlEmf")
 @PropertySource(value = "classpath:/config/persistence.properties", ignoreResourceNotFound = false)
 public class ApplicationContextPersistence {
 
@@ -65,7 +65,7 @@ public class ApplicationContextPersistence {
   boolean testConnectionOnCheckin;
   @Value("${preferredTestQuery}")
   String preferredTestQuery;
-  @Value("${hibernate.dialect.psql}")
+  @Value("${hibernate.dialect.mysql}")
   String hibernateDialect;
   @Value("${hibernate.show_sql}")
   String hibernateShowSql;
@@ -85,7 +85,7 @@ public class ApplicationContextPersistence {
     final LocalContainerEntityManagerFactoryBean entityManager =
         new LocalContainerEntityManagerFactoryBean();
     entityManager.setDataSource(comboPooledDataSource());
-    entityManager.setPackagesToScan("com.accsa.sgot.persistence.model.mysql.entity");
+    entityManager.setPackagesToScan("com.orders.persistence.model.mysql.entity");
     final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
     entityManager.setJpaVendorAdapter(vendorAdapter);
     final Properties properties = new Properties();
@@ -111,7 +111,7 @@ public class ApplicationContextPersistence {
    * @throws PropertyVetoException
    * @throws SQLException
    */
-  @Bean(name = "pSqlDataSource", destroyMethod = "close")
+  @Bean(name = "mySqlDataSource", destroyMethod = "close")
   public ComboPooledDataSource comboPooledDataSource() {
     final ComboPooledDataSource poolDataSource = new ComboPooledDataSource();
     try {

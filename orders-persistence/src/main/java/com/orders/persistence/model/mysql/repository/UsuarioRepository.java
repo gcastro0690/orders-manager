@@ -8,14 +8,7 @@ import com.orders.persistence.model.mysql.entity.Usuario;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-	Usuario findById(Long id);
 
-	Long countById(Long id);
-
-	List<Usuario> findByDocumento(String documento);
-
-	Usuario findOneByDocumento(String documento);
-
-	Long countByDocumento(String documento);
+	Usuario findByUsernameAndPass(String username, String pass);
 
 }
