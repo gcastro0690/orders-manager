@@ -3,8 +3,8 @@
 
   <!-- PROPERTIES -->
   <property name="appenderRoot" value="CONSOLE"/>
-  <property name="logFilePath" value="${catalina.home}/logs/sgot_${environment}"/>
-  <property name="logFileName" value="sgot"/>
+  <property name="logFilePath" value="${catalina.home}/logs/orders_${environment}"/>
+  <property name="logFileName" value="orders"/>
   <property name="patternRelativeThread"
     value="%-4relative [%thread] %-5level %logger{35} - %msg%n"/>
   <property name="patternCommon" value="%d %5p %c:%4L - %m%n"/>
@@ -41,10 +41,10 @@
   <property name="levelRoot" value="INFO"/>
 
   <!-- Paquetes -->
-  <logger name="com.accsa.sgot" level="${levelApp}"/>
-  <logger name="com.accsa.sgot.web" level="${levelApp}"/>
-  <logger name="com.accsa.sgot.persistence" level="${levelApp}"/>
-  <logger name="com.accsa.sgot.core" level="${levelApp}"/>
+  <logger name="com.orders" level="${levelApp}"/>
+  <logger name="com.orders.web" level="${levelApp}"/>
+  <logger name="com.orders.persistence" level="${levelApp}"/>
+  <logger name="com.orders.core" level="${levelApp}"/>
 
   <!-- PrimeFaces -->
   <logger name="org.primefaces" level="${levelFrame}"/>

@@ -7,7 +7,7 @@
         <dependent-module archiveName="orders-persistence-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/orders-persistence/orders-persistence">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <property name="java-output-path" value="/sgot-web/target/WEB-INF/classes"/>
+        <property name="java-output-path" value="/orders-web/target/WEB-INF/classes"/>
         <property name="context-root" value="ORDERS"/>
     </wb-module>
 </project-modules>

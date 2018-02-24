@@ -5,7 +5,7 @@
 	<artifactId>orders-manager</artifactId>
 	<version>${projectVersion}</version>
 	<packaging>pom</packaging>
-	<name>Proyecto SGOT</name>
+	<name>Proyecto OM</name>
 
 	<modules>
 		<module>orders-persistence</module>
