@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.orders.persistence.model.mysql.entity.User;
+import com.orders.persistence.model.mysql.entity.UserRole;
 import com.orders.persistence.model.mysql.repository.UserRepository;
 @ManagedBean(name = "loginController")
 @SessionScoped
@@ -43,9 +44,15 @@ public class LoginController extends BasicController implements Serializable {
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletResponse response = (HttpServletResponse)context.getExternalContext().getResponse();
 
-		if(user != null) {			
+		if(user != null) {	
 			setUserSession(user);
-			response.sendRedirect("view/home/adminHome.xhtml");
+			if(user.getRole().name().equals(UserRole.ADMIN.name())) {
+				response.sendRedirect("view/home/adminHome.xhtml");
+			}else if(user.getRole().name().equals(UserRole.DISPATCHER.name())){
+				response.sendRedirect("view/home/dispatcherHome.xhtml");
+			}
+			
+			
 		}else {
 			context.addMessage(null, new FacesMessage("Error!",  "User or Pass are incorrect") );
 		}

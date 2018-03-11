@@ -56,6 +56,9 @@ public class User{
 	}
 
 	public String getName() {
+		if(name == null) {
+			name = "";
+		}
 		return name;
 	}
 
@@ -80,6 +83,9 @@ public class User{
 	}
 
 	public String getLastname() {
+		if(lastname == null) {
+			lastname = "";
+		}
 		return lastname;
 	}
 
