@@ -44,12 +44,16 @@ public class LoginController extends BasicController implements Serializable {
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletResponse response = (HttpServletResponse)context.getExternalContext().getResponse();
 
-		if(user != null) {	
+		if(user != null) {
+			user.setStatus("ONLINE");
+			userRepository.saveAndFlush(user);
 			setUserSession(user);
 			if(user.getRole().name().equals(UserRole.ADMIN.name())) {
 				response.sendRedirect("view/home/adminHome.xhtml");
 			}else if(user.getRole().name().equals(UserRole.DISPATCHER.name())){
 				response.sendRedirect("view/home/dispatcherHome.xhtml");
+			}else if(user.getRole().name().equals(UserRole.TECHNICIAN.name())){
+				response.sendRedirect("view/home/technicianHome.xhtml");
 			}
 			
 			
@@ -63,8 +67,15 @@ public class LoginController extends BasicController implements Serializable {
 		context.getExternalContext().getSessionMap().put("user", user);
 	}
 	
+	private User getUserSession() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		return (User) context.getExternalContext().getSessionMap().get("user");
+	}
 	
 	public void logoutAndRedirect() throws IOException {
+		User user = getUserSession();
+		user.setStatus("OFFLINE");
+		userRepository.saveAndFlush(user);
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletResponse response = (HttpServletResponse)context.getExternalContext().getResponse();
 		

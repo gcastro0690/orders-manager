@@ -1,5 +1,8 @@
 package com.orders.persistence.model.mysql.entity;
 
+import java.util.Date;
+
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -29,6 +33,12 @@ public class Order{
 
 	@Column
 	private String descripcion;
+	
+	@Column
+	private Date startDate;
+	
+	@Column
+	private Date endDate;
 
 	@Enumerated(EnumType.STRING)
 	private OrderStatus status;
@@ -41,6 +51,12 @@ public class Order{
 	@JoinColumn(name="technician_id")
 	private User technician;
 
+	private String fileMimeType;  
+	private String fileName; 
+	@Lob
+	@Basic(fetch = FetchType.LAZY) 
+	private  byte[]  file;
+	  
 	public Long getId() {
 		return id;
 	}
@@ -95,6 +111,46 @@ public class Order{
 		this.technician = technician;
 	}
 
-	
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+
+	public byte[] getFile() {
+		return file;
+	}
+
+	public void setFile(byte[] file) {
+		this.file = file;
+	}
+
+	public String getFileMimeType() {
+		return fileMimeType;
+	}
+
+	public void setFileMimeType(String fileMimeType) {
+		this.fileMimeType = fileMimeType;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
 	
 }
