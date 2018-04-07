@@ -19,7 +19,6 @@
 		<projectVersion>1.0.0</projectVersion>
 		<maven.build.timestamp.format>dd/MM/yyyy</maven.build.timestamp.format>
 		<timestamp>${maven.build.timestamp}</timestamp>
-		<jdkVersion>1.8</jdkVersion>
 		<jsr330Injection>1</jsr330Injection>
 		<servletVersion>3.1.0</servletVersion>
 		<jstlVersion>1.2</jstlVersion>
@@ -365,8 +364,8 @@
 						<encoding>UTF-8</encoding>
 						<showDeprecation>true</showDeprecation>
 						<showWarnings>true</showWarnings>
-						<source>${jdkVersion}</source>
-						<target>${jdkVersion}</target>
+						<source>1.8</source>
+						<target>1.8</target>
 					</configuration>
 				</plugin>
 				<plugin>

@@ -10,15 +10,10 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 @Configuration
 @ComponentScan("com.orders")
 @PropertySource(value = "classpath:/config/config.properties", ignoreResourceNotFound = false)
-@EnableAspectJAutoProxy // EstiloAspectJ de Spring AOP
+@EnableAspectJAutoProxy 
 public class ApplicationContextCore {
-  /* Inyeccion del Logger SLF4J */
-  @Bean
-  public LoggablePostProcessor gloggablePostProcessor() {
-    return new LoggablePostProcessor();
-  }
+ 
 
-  // To resolve ${} in @Value
   @Bean
   public static PropertySourcesPlaceholderConfigurer propertyConfig() {
     return new PropertySourcesPlaceholderConfigurer();

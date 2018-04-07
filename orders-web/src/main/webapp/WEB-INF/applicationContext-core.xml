@@ -14,7 +14,5 @@
 	<!-- EstiloAspectJ de Spring AOP -->
 	<aop:aspectj-autoproxy />
 
-	<!-- Inyeccion del Logger SLF4J -->
-	<bean id="loggableInjector" class="com.orders.commons.component.LoggablePostProcessor" />
 
 </beans>

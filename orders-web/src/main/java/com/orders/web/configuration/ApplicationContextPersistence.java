@@ -105,12 +105,6 @@ public class ApplicationContextPersistence {
     return jpaTransactionManager;
   }
 
-  /**
-   * Init c3p0 Datasource
-   * 
-   * @throws PropertyVetoException
-   * @throws SQLException
-   */
   @Bean(name = "mySqlDataSource", destroyMethod = "close")
   public ComboPooledDataSource comboPooledDataSource() {
     final ComboPooledDataSource poolDataSource = new ComboPooledDataSource();

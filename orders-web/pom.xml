@@ -1,29 +1,195 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>com.orders-manager</groupId>
-		<artifactId>orders-manager</artifactId>
-		<version>${projectVersion}</version>
-	</parent>
+	<groupId>com.orders-manager</groupId>
 	<artifactId>orders-web</artifactId>
-	<name>Orders Manager Web</name>
-	<description>Capa de presentación web</description>
+	<version>${projectVersion}</version>
+	<name>Orders Manager</name>
 
+	<packaging>war</packaging>
+	
 	<properties>
 		<warName>ORDERS</warName>
+		<projectVersion>1.0.0</projectVersion>
+		<servletVersion>3.1.0</servletVersion>
+		<jstlVersion>1.2</jstlVersion>
+		<jspVersion>2.3</jspVersion>
+		<ELVersion>3.0.0</ELVersion>
+		<jsfVersion>2.2.14</jsfVersion>
+		<themeVersion>1.0.10</themeVersion>
+		<omniFacesVersion>1.14</omniFacesVersion>
+		<primefacesVersion>6.1</primefacesVersion>
+		<springVersion>4.3.2.RELEASE</springVersion>
+		<springDataVersion>1.11.1.RELEASE</springDataVersion>
+		<hibernateVersion>5.2.8.Final</hibernateVersion>
+		<hibernateValidatorVersion>5.3.4.Final</hibernateValidatorVersion>
+		<jpaVersion>2.1</jpaVersion>
+		<psqlVersion>42.0.0</psqlVersion>
+		<commonsLangVersion>3.5</commonsLangVersion>
+		<commonsCollectionsVersion>4.1</commonsCollectionsVersion>
+		<commonsIO>2.5</commonsIO>
+		<guavaVersion>21.0</guavaVersion>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<c3p0.version>0.9.5.2</c3p0.version>
+		<mavenWarPluginVersion>3.0.0</mavenWarPluginVersion>
+		<mavenDependencyPluginVersion>3.0.0</mavenDependencyPluginVersion>
+		<mavenJavadocPluginVersion>2.10.4</mavenJavadocPluginVersion>
+		<mavenCleanPluginVersion>3.0.0</mavenCleanPluginVersion>
+		<mavenCompilerPluginVersion>3.6.1</mavenCompilerPluginVersion>
+		<mavenInstallPluginVersion>2.5.2</mavenInstallPluginVersion>
+		<mavenSureFirePluginVersion>2.19.1</mavenSureFirePluginVersion>
+		<mavenSitePluginVersion>3.6</mavenSitePluginVersion>
+		<mavenProjectInfoReportsPluginVersion>2.9</mavenProjectInfoReportsPluginVersion>
+		<commonsValidatorVersion>1.6</commonsValidatorVersion>
+		<cdiApiVersion>1.2</cdiApiVersion>
+		<websocketApiVersion>1.1</websocketApiVersion>
+		<commonsFileuploadVersion>1.3.2</commonsFileuploadVersion>
 	</properties>
-	<packaging>war</packaging>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-framework-bom</artifactId>
+				<version>${springVersion}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-web</artifactId>
+				<version>${springSecurityVersion}</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>spring-beans</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>spring-web</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>spring-context</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>spring-expression</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-config</artifactId>
+				<version>${springSecurityVersion}</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>spring-core</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>spring-beans</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>spring-context</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.webflow</groupId>
+				<artifactId>spring-faces</artifactId>
+				<version>${springWebFlowVersion}</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>commons-logging</artifactId>
+						<groupId>commons-logging</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>spring-core</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>spring-beans</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>spring-context</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>spring-js</artifactId>
+						<groupId>org.springframework.webflow</groupId>
+					</exclusion>
+					
+				</exclusions>
+			</dependency>
+			
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
-	<dependency>
+		
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commonsLangVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+			<version>${commonsCollectionsVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commonsIO}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guavaVersion}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>		
+		
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernateVersion}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.omnifaces</groupId>
 			<artifactId>omnifaces</artifactId>
 			<version>${omniFacesVersion}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.orders-manager</groupId>
-			<artifactId>orders-persistence</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -62,28 +228,38 @@
 			<artifactId>cdi-api</artifactId>
 			<version>${cdiApiVersion}</version>
 		</dependency>
+		
 		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>jquery</artifactId>
-			<version>${jquery.version}</version>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernateVersion}</version>
 		</dependency>
 		<dependency>
-			<groupId>commons-fileupload</groupId>
-			<artifactId>commons-fileupload</artifactId>
-			<version>${commonsFileuploadVersion}</version>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernateValidatorVersion}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.webjars</groupId>
-			<artifactId>jquery-ui</artifactId>
-			<version>${jqueryUI.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>jquery</artifactId>
-					<groupId>org.webjars</groupId>
-				</exclusion>
-			</exclusions>
+			<groupId>com.mchange</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>${c3p0.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>${springDataVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.38</version>
+		</dependency>
+		
 	</dependencies>
+
+	
+
+	
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<outputDirectory>${project.build.directory}/WEB-INF/classes</outputDirectory>
@@ -96,9 +272,6 @@
 				<filtering>false</filtering>
 				<excludes>
 					<exclude>config/**</exclude>
-					<exclude>security/**</exclude>
-					<exclude>metadata/**</exclude>
-					<exclude>node/**</exclude>
 				</excludes>
 			</resource>
 			<resource>
@@ -109,7 +282,6 @@
 				</includes>
 				<excludes>
 					<exclude>context.xml</exclude>
-					<exclude>certs/**</exclude>
 				</excludes>
 				<targetPath>config</targetPath>
 			</resource>
@@ -138,14 +310,6 @@
 				<targetPath>${project.build.directory}/${warName}/WEB-INF</targetPath>
 			</resource>
 			<resource>
-				<directory>src/main/resources/config/${environment}/certs</directory>
-				<filtering>false</filtering>
-				<includes>
-					<include>*</include>
-				</includes>
-				<targetPath>${project.build.directory}/${warName}/WEB-INF/classes/config</targetPath>
-			</resource>
-			<resource>
 				<directory>src/main/resources/metadata</directory>
 				<filtering>true</filtering>
 				<includes>
@@ -153,29 +317,27 @@
 				</includes>
 				<targetPath>${project.build.directory}/${warName}/WEB-INF/classes/metadata</targetPath>
 			</resource>
-			<resource>
-				<directory>src/main/resources/security</directory>
-				<filtering>false</filtering>
-				<targetPath>${project.build.directory}/${warName}/WEB-INF/classes/security</targetPath>
-			</resource>
 		</resources>
 		<finalName>${warName}</finalName>
 		<plugins>
+			<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${mavenCompilerPluginVersion}</version>
+					<configuration>
+						<encoding>UTF-8</encoding>
+						<showDeprecation>true</showDeprecation>
+						<showWarnings>true</showWarnings>
+						<source>1.8</source>
+						<target>1.8</target>
+					</configuration>
+				</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>${mavenWarPluginVersion}</version>
 				<configuration>
 					<encoding>${project.build.sourceEncoding}</encoding>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>**/*IntegrationTest.java</exclude>
-					</excludes>
 				</configuration>
 			</plugin>
 		</plugins>

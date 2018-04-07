@@ -24,12 +24,10 @@ public class WebAppInitializer extends FacesInitializer implements WebApplicatio
   public void onStartup(ServletContext container) throws ServletException {
     AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
     rootContext.register(ApplicationContextCore.class, ApplicationContextPersistence.class);
-    // Manage the lifecycle of the root application context
     container.addListener(new ContextLoaderListener(rootContext));
     AnnotationConfigWebApplicationContext dispatcherServlet =
         new AnnotationConfigWebApplicationContext();
 
-    // Register and map the dispatcher servlet
     ServletRegistration.Dynamic dispatcher =
         container.addServlet("dispatcher", new DispatcherServlet(dispatcherServlet));
     dispatcher.setLoadOnStartup(1);
