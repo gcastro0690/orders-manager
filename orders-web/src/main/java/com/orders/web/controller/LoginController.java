@@ -50,10 +50,6 @@ public class LoginController extends BasicController implements Serializable {
 			setUserSession(user);
 			if(user.getRole().name().equals(UserRole.ADMIN.name())) {
 				response.sendRedirect("view/home/adminHome.xhtml");
-			}else if(user.getRole().name().equals(UserRole.DISPATCHER.name())){
-				response.sendRedirect("view/home/dispatcherHome.xhtml");
-			}else if(user.getRole().name().equals(UserRole.TECHNICIAN.name())){
-				response.sendRedirect("view/home/technicianHome.xhtml");
 			}
 			
 			
