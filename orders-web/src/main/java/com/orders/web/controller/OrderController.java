@@ -214,6 +214,5 @@ public class OrderController extends BasicController implements Serializable {
 		order.setFile(buffer);
 		order.setFileMimeType(type);
 		order.setFileName(name);
-		order.setEndDate(new Date());
 	}
 }

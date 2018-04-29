@@ -57,14 +57,6 @@ public class ApplicationContextPersistence {
   int maxConnectionAge;
   @Value("${checkoutTimeout}")
   int checkoutTimeout;
-  @Value("${idleConnectionTestPeriod}")
-  int idleConnectionTestPeriod;
-  @Value("${testConnectionOnCheckout}")
-  boolean testConnectionOnCheckout;
-  @Value("${testConnectionOnCheckin}")
-  boolean testConnectionOnCheckin;
-  @Value("${preferredTestQuery}")
-  String preferredTestQuery;
   @Value("${hibernate.dialect.mysql}")
   String hibernateDialect;
   @Value("${hibernate.show_sql}")
@@ -124,11 +116,6 @@ public class ApplicationContextPersistence {
       poolDataSource.setMaxIdleTime(maxIdleTime);
       poolDataSource.setMaxConnectionAge(maxConnectionAge);
       poolDataSource.setCheckoutTimeout(checkoutTimeout);
-      poolDataSource.setIdleConnectionTestPeriod(idleConnectionTestPeriod);
-      poolDataSource.setTestConnectionOnCheckout(testConnectionOnCheckout);
-      poolDataSource.setPreferredTestQuery(preferredTestQuery);
-      poolDataSource.setTestConnectionOnCheckin(testConnectionOnCheckin);
-      poolDataSource.setPreferredTestQuery(preferredTestQuery);
       return poolDataSource;
     } catch (PropertyVetoException e) {
       throw new RuntimeException(e);

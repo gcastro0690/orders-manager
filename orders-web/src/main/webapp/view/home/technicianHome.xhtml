@@ -122,7 +122,11 @@
 									    <p:column headerText="End Date">
 									        <h:outputText value="#{order.endDate}" />
 									    </p:column>
-									 
+									 	<p:column style="width:50px">
+									    	<p:commandButton rendered="#{order.fileName ne null}" ajax="false" action="#{orderController.downloadReport()}" type="submit" icon="ui-icon-document" styleClass="btn btn-danger btn-round btn-icon btn-icon-mini btn-neutral" update="formOrders:orderDataTable">
+									    		<f:setPropertyActionListener value="#{order}" target="#{orderController.order}"></f:setPropertyActionListener>
+									    	</p:commandButton>	
+									    </p:column>
 									    <p:column style="width:50px">
 									    	<p:commandButton  type="submit" rendered="#{order.startDate eq null}" action="#{orderController.takeOrder()}" icon="ui-icon-gear" title="Take Order" styleClass="btn btn-danger btn-round btn-icon btn-icon-mini btn-neutral" update="formOrdersTech:orderDataTable">
 									    		<f:setPropertyActionListener value="#{order}" target="#{orderController.order}"></f:setPropertyActionListener>									    		
@@ -200,18 +204,17 @@
 		                                    </div>
 		                                </div>
 		                            </div>
-		                            </p:outputPanel>
+		                            
 		                            <div class="row">
-		                                <div class="col-md-12 pr-1">
+		                                <div class="col-md-6 pr-1">
 		                                    <div class="form-group">
-		                                    	<label>Upload Report:</label>
-		                        				<p:fileUpload style="padding-left:10px" fileUploadListener="#{orderController.handleFileUpload}" mode="advanced" auto="true" allowTypes="/(\.|\/)(pdf)$/"/>
-                     							<p:outputPanel autoUpdate="true">
-                     								<p:outputLabel style="padding-bottom:10px" value="#{orderController.file.fileName}"></p:outputLabel>
-                     							</p:outputPanel>
-	                        				</div>
-                        				</div>
-                       				</div>
+		                                        <label>Work Description: </label>
+		                                        <p:inputTextarea value="#{orderController.order.descripcion}" placeholder="Work Description" styleClass="form-control"/>
+		                                    </div>
+		                                </div>		                                
+		                            </div>
+		                            </p:outputPanel>
+		                            
                        				<div class="row">
 		                                <div class="col-md-12">
 		                                    <div class="form-group" style="text-align: right">

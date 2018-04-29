@@ -28,7 +28,7 @@
 	
 	<p:messages></p:messages>
 	<h:form id="formOrders">
-	<p:poll interval="3" update="formOrders"></p:poll>
+	
 	<p:growl id="growl" showDetail="true" sticky="true" />
     <div class="wrapper ">
         <div class="sidebar" data-color="orange">
@@ -123,11 +123,7 @@
 									 	<p:column headerText="Technician">
 									        <h:outputText value="#{order.technician.name} #{order.technician.lastname}" />
 									    </p:column>
-									    <p:column style="width:50px">
-									    	<p:commandButton rendered="#{order.fileName ne null}" ajax="false" action="#{orderController.downloadReport()}" type="submit" icon="ui-icon-document" styleClass="btn btn-danger btn-round btn-icon btn-icon-mini btn-neutral" update="formOrders:orderDataTable">
-									    		<f:setPropertyActionListener value="#{order}" target="#{orderController.order}"></f:setPropertyActionListener>
-									    	</p:commandButton>	
-									    </p:column>
+									    
 									    
 									    <p:column style="width:50px">
 									    	<p:commandButton rendered="#{order.status.name() eq 'PENDING'}" onclick="PF('order').show();" type="button" icon="ui-icon-pencil" styleClass="btn btn-danger btn-round btn-icon btn-icon-mini btn-neutral">
@@ -159,6 +155,9 @@
 								        BACKGROUND-COLOR: lightcoral;
 								    }
 								</style>
+								<p:poll interval="3" update="techPanel"></p:poll>
+								<p:outputPanel id="techPanel">
+									<p:poll  interval="3" update="techPanel" widgetVar="poll" autoStart="false"></p:poll>
 	                            	<p:dataTable  id="techDataTable" var="tech" value="#{orderController.techniciansControlPanel}" tableStyleClass="table" 
 	                            		rowStyleClass="#{tech.status eq 'ONLINE' ? 'onlineRowStyle' : 'offlineRowStyle'}">
 									    <p:column headerText="Name" >
@@ -173,7 +172,8 @@
 									        <h:outputText value="#{tech.status}" />
 									    </p:column>
 									 
-									</p:dataTable>        
+									</p:dataTable>   
+								</p:outputPanel>     
                                 </div>
                             </div>
                         </div>
@@ -189,7 +189,6 @@
 
 <p:dialog  widgetVar="order" showEffect="explode" modal="true" width="900" showHeader="false">
 	<h:form>
-		<p:outputPanel autoUpdate="true">
 	 	<div class="main-panel" style="width: 100%;height: 100%">
 			<div class="panel-header panel-header-sm">
 	        </div>
@@ -250,6 +249,19 @@
 		                                </div>
 		                            </div>
 		                            <div class="row">
+		                                <div class="col-md-12 pr-1">
+		                                    <div class="form-group">
+		                                    <p:outputPanel>
+		                                    	<label>Upload Schema:</label>
+		                        				<p:fileUpload style="padding-left:10px" fileUploadListener="#{orderController.handleFileUpload}" mode="advanced" auto="true" allowTypes="/(\.|\/)(pdf)$/"/>
+                     							<p:outputPanel autoUpdate="true">
+                     								<p:outputLabel style="padding-bottom:10px" value="#{orderController.file.fileName}"></p:outputLabel>
+                     							</p:outputPanel>
+                     						</p:outputPanel>
+	                        				</div>
+                        				</div>
+                       				</div>
+		                            <div class="row">
 		                                <div class="col-md-12">
 		                                    <div class="form-group" style="text-align: right">
 		                                       <p:commandButton value="Cancel"  onclick="PF('order').hide();" />
@@ -264,7 +276,6 @@
 		        </div>
 		    </div>
 	    </div>
-	    </p:outputPanel>
 	</h:form>    
 </p:dialog> 
  
